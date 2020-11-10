@@ -7,10 +7,10 @@ Requires [rojo](https://github.com/rojo-rbx/rojo).
 
 ```bash
 # Build place
-rojo build -o poopy-parser.rbxlx
+rojo build -o 2dRobeats.rbxlx
 
 # Open place (Windows-only)
-start poopy-parser.rbxlx
+start 2dRobeats.rbxlx
 
 # Start Rojo server
 rojo serve
