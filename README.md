@@ -18,4 +18,4 @@ rojo serve
 
 ## License
 
-This project is licensed under the LGPL License. Read [LICENSE](LICENSE) for more details.
+This project is licensed under the BSD-2 License. Read [LICENSE](LICENSE) for more details.
