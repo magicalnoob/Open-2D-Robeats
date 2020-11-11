@@ -22,7 +22,6 @@ rojo serve
 Also this game is really mediocre and it doesn't have accuracy visualizers, but can be added easily.
 It's more of a finish game base.
 
-Gameplay:
-https://gyazo.com/addbaca845a53f77b93af91e7cadc089
+![Gameplay](https://gyazo.com/addbaca845a53f77b93af91e7cadc089)
 
 This project is licensed under the GNU 3.0 License. Read [LICENSE](LICENSE) for more details.
