@@ -1,4 +1,3 @@
--- @todo Add variable score from ms delay
 -- @todo Make accuracy score
 
 if (not game:IsLoaded()) then
@@ -121,7 +120,7 @@ UserInputService.InputEnded:Connect(function(input, processed)
 end)
 
 --- Bind for accuracy
-Message:Connect(GameHandler.ScoreChanged);
+Message:Connect(GameHandler.DisplayText);
 Message:AddObject("Message", "%s");
 
 --- Make game routine
