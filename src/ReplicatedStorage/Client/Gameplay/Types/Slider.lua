@@ -141,8 +141,8 @@ function Slider:Update(dt)
 	self.SleeveTop.Position = UDim2.new(self.posX, 0, self.positionTop, 0);
 	
 	if (self.positionTop > Config.NOTE_FAIL_RANGE) then
-		self:Destroy();
 		self.Score:Fire(0);
+		self:Destroy();
 	end
 
 	return;
