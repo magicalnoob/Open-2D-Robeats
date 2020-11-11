@@ -2,7 +2,10 @@
 -- A simple slider
 -- @author Magical_Noob
 
-local Signal = require(script.Parent.Parent:WaitForChild("Signal"));
+local Gameplay = script.Parent.Parent;
+local Config = require(game.ReplicatedStorage:WaitForChild("GameConfig"));
+local Signal = require(Gameplay:WaitForChild("Signal"));
+
 local Slider = {};
 Slider.__index = Slider;
 
@@ -19,6 +22,8 @@ function Slider:new(track, speed, distance)
 		{
 			Passed = Signal:new();
 			
+			hitBot = false;
+			
 			posX = track / 4;
 			positionTop = -(1/speed)*(distance/1000); -- every 1 second the thing goes from top to bottom
 			positionBot = 0;
@@ -32,7 +37,7 @@ end
 -- @param origin: number
 -- @return pos: number
 function Slider:GetPosition(origin)
-	return self.positionTop;
+	return self.hitBot and self.positionTop or self.positionBot;
 end
 
 --- OnAwake
@@ -70,23 +75,37 @@ function Slider:OnAwake(MakeSleeve)
 end
 
 --- OnNoteReleased
--- @param distance: number
--- @param origin: number
--- @param size: number
-function Slider:OnNoteReleased(distance, origin, size)	
-	local trueDistance = size / distance;
-	self.Score:Fire(1);		
+-- @param origin: number 
+-- @param size: number 
+-- @param score: NoteConfig 
+function Slider:OnNoteReleased(origin, size, score)	
+	if (not score) then
+		self.Score:Fire(0);
+		return;
+	end
+	
+	self.Score:Fire(score.pts_add);
+	self.hitBot = false;
 	self:Destroy();
 end
 
 --- OnNoteHeld
--- @param distance: number
 -- @param origin: number
 -- @param size: number
-function Slider:OnNoteHeld(_, origin, size)
-	local distance = math.abs(self.positionBot - origin);
-	local trueDistance = size / distance;
-	self.Score:Fire(1);
+-- @param score: NoteConfig
+function Slider:OnNoteHeld(origin, size, score)
+	if (self.hitBot) then
+		self.Score:Fire(0);
+		return;
+	end
+	
+	if (not score) then
+		self.Score:Fire(0);
+		return;
+	end
+	
+	self.Score:Fire(score.pts_add);
+	self.hitBot = true;
 end
 
 --- OnNoteHeld
@@ -121,7 +140,7 @@ function Slider:Update(dt)
 	self.SleeveBottom.Position = UDim2.new(self.posX, 0, self.positionBot, 0);
 	self.SleeveTop.Position = UDim2.new(self.posX, 0, self.positionTop, 0);
 	
-	if (self.positionTop > 1.1) then
+	if (self.positionTop > Config.NOTE_FAIL_RANGE) then
 		self:Destroy();
 		self.Score:Fire(0);
 	end
