@@ -69,7 +69,6 @@ end
 function Note:OnNoteHeld(origin, size, score)
 	if (not score) then
 		self.Score:Fire(0);
-		self:Destroy();
 		return;
 	end
 	
