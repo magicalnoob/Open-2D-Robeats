@@ -25,6 +25,8 @@ GameHandler.Combo = 0;
 GameHandler.Misses = 0;
 
 GameHandler.ScoreChanged = Signal:new();
+GameHandler.DisplayText = Signal:new();
+
 GameHandler.gameTime = 0;
 GameHandler.timeScale = 0;
 GameHandler.speed = 0.25;
@@ -86,7 +88,7 @@ function GameHandler:SetRound(path)
 
 	--- countdown
 	for countdown = 3, 0, -1 do
-		self.ScoreChanged:Fire(countdown);	
+		self.DisplayText:Fire(countdown);	
 		SoundHandler:PlaySound("countdown");
 		wait(0.75);
 	end
@@ -158,7 +160,7 @@ function GameHandler:AddTrack(num, keybind, color)
 			self.Combo = 0;
 		end
 		
-		self.ScoreChanged:Fire(self.Combo);
+		self.DisplayText:Fire(self.Combo);
 	end)
 end
 
