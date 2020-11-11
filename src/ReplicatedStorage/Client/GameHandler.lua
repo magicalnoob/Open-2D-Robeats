@@ -5,12 +5,14 @@
 local SONGS_FOLDER = game.ReplicatedStorage.Songs;
 
 --- Really bad
-local SoundHandler = require(script.Parent:WaitForChild("SoundHandler"));
-local Gameplay = script.Parent:WaitForChild("Gameplay");
-local FastSpawn = require(Gameplay:WaitForChild("FastSpawn"));
-local FastWait = require(Gameplay:WaitForChild("FastWait"));
-local Signal = require(Gameplay:WaitForChild("Signal"));
-local Track = require(Gameplay:WaitForChild("Track"));
+local UserInputService = game:GetService("UserInputService");
+local Config = require(game.ReplicatedStorage.GameConfig);
+local SoundHandler = require(script.Parent.SoundHandler);
+local Gameplay = script.Parent.Gameplay;
+local FastSpawn = require(Gameplay.FastSpawn);
+local FastWait = require(Gameplay.FastWait);
+local Signal = require(Gameplay.Signal);
+local Track = require(Gameplay.Track);
 
 local FORMAT = "%0.1f";
 local GameHandler = {};
@@ -150,7 +152,7 @@ function GameHandler:AddTrack(num, keybind, color)
 	
 	track.Score:Connect(function(add)
 		self.Add += add;
-		self.Max += 1;
+		self.Max += Config.MAX_PTS;
 
 		if (add > 0) then
 			SoundHandler:PlaySound("hit");
@@ -219,6 +221,27 @@ function GameHandler:Update(dt)
 		track:Update(dt * self.timeScale);
 	end
 end
+
+--- Bind input
+UserInputService.InputBegan:Connect(function(input, processed)
+	if (processed) then
+		return;
+	end
+
+	if (GameHandler.bound[input.KeyCode.Value]) then
+		GameHandler.bound[input.KeyCode.Value]:OnTrackCommand();
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input, processed)
+	if (processed) then
+		return;
+	end
+
+	if (GameHandler.bound[input.KeyCode.Value]) then
+		GameHandler.bound[input.KeyCode.Value]:OnTrackReleased();
+	end
+end)
 
 --- export
 return GameHandler;
