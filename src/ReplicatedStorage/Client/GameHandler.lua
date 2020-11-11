@@ -81,6 +81,7 @@ function GameHandler:SetRound(path)
 	--SoundHandler:PlayMusic(0);
 	
 	local parent = GetPath(path);
+	self.CurrentMap = path;
 	
 	--- load bgm
 	local round = require(parent);
@@ -90,6 +91,9 @@ function GameHandler:SetRound(path)
 
 	--- countdown
 	for countdown = 3, 0, -1 do
+		if (self.CurrentMap ~= path) then
+			return;
+		end
 		self.DisplayText:Fire(countdown);	
 		SoundHandler:PlaySound("countdown");
 		wait(0.75);
