@@ -19,8 +19,8 @@ rojo serve
 
 ## License
 
-Also this game is really mediocre and it doesn't have a varied point system (and accuracy visualizer)
-It's more of a finish game base and you can add on to it.
+Also this game is really mediocre and it doesn't have accuracy visualizers, but can be added easily.
+It's more of a finish game base.
 
 Gameplay:
 https://gyazo.com/addbaca845a53f77b93af91e7cadc089
