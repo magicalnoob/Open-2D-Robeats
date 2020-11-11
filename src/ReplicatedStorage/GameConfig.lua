@@ -12,6 +12,6 @@ GameConfig.NOTE_SCORES = {
 	great = 50;
 	meh = 100;
 	bad = 150;
-}
+};
 
 return GameConfig;
