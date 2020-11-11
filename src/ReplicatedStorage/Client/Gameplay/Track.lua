@@ -6,9 +6,9 @@ local Config = require(game.ReplicatedStorage:WaitForChild("GameConfig"));
 local Signal = require(script.Parent:WaitForChild("Signal"));
 local TypesFolder = script.Parent:WaitForChild("Types");
 
-local MAX_TRACKS = 4;
+local MAX_TRACKS = Config.MAX_TRACKS;
+local MISS_RANGE = Config.NOTE_FAIL_RANGE;
 local NOTE_IMAGE = "rbxassetid://5935157727";
-local MISS_RANGE = 1.5;
 
 local TYPES = {};
 local ROTATIONS = {
