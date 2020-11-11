@@ -2,6 +2,7 @@
 -- A track that handles notes
 -- Also handles mostly the entire game lol
 -- @author Magical_Noob
+local Config = require(game.ReplicatedStorage:WaitForChild("GameConfig"));
 local Signal = require(script.Parent:WaitForChild("Signal"));
 local TypesFolder = script.Parent:WaitForChild("Types");
 
@@ -88,6 +89,21 @@ function Track:new(position, color)
 	, Track);
 end
 
+--- CalculateScoreFromDistance
+-- @param data: Beat
+-- @return data: NoteConfig
+-- @return distance: number
+function Track:CalculateScoreFromDistance(note)
+	local distance = math.abs(self.yPosition - note:GetPosition());
+	local ms = (1/note.speed)*1000*distance;
+	for name, value in pairs(Config.NOTE_SCORES)do
+		if (value.range > ms) then
+			return value, distance;
+		end
+	end
+	return nil, distance;
+end
+
 --- OnNoteAdded
 -- @param speed: number
 function Track:OnNoteAdded(typ, speed, ...)
@@ -101,6 +117,7 @@ function Track:OnNoteAdded(typ, speed, ...)
 	end
 	
 	--- init note
+	note.calculateScore = self.calculateScore
 	note.trackPos = self.position;
 	note.parent = self.Notes;
 	note.color = self.color;
@@ -123,13 +140,11 @@ function Track:OnTrackReleased()
 	if (not self.notes[1]) then
 		return;
 	end
-	
-	local distance = math.abs(self.notes[1]:GetPosition(self.yPosition) - self.yPosition);
-	if (distance <= self.yScale) then
-		--- successful hit
-		local data = self.notes[1];
-		data:OnNoteReleased(distance, self.yPosition, self.yScale);		
-	end
+
+	--- successful hit
+	local data = self.notes[1];
+	local score = self:CalculateScoreFromDistance(data);
+	data:OnNoteReleased(self.yPosition, self.yScale, score);		
 	
 end
 
@@ -141,15 +156,10 @@ function Track:OnTrackCommand()
 		self.Score:Fire(0);
 		return;
 	end
-	
-	local distance = math.abs(self.notes[1]:GetPosition(self.yPosition) - self.yPosition);
-	if (distance > self.yScale)	then
-		self.Score:Fire(0);
-	else
-		--- successful hit		
-		local data = self.notes[1];
-		data:OnNoteHeld(distance, self.yPosition, self.yScale);	
-	end
+			
+	local data = self.notes[1];
+	local score = self:CalculateScoreFromDistance(data);
+	data:OnNoteHeld(self.yPosition, self.yScale, score);	
 	
 end
 
