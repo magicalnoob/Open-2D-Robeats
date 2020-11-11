@@ -5,8 +5,7 @@
 local GameConfig = {};
 GameConfig.__index = GameConfig;
 
-GameConfig.NOTE_RANGE = 1.5;
-GameConfig.NOTE_FAIL_RANGE = 1.15;
+GameConfig.NOTE_FAIL_RANGE = 1;
 GameConfig.MAX_TRACKS = 4;
 GameConfig.MAX_PTS = 4;
 
