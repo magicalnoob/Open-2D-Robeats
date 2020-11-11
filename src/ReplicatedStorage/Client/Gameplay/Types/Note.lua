@@ -2,7 +2,10 @@
 -- A simple note(or beat)
 -- @author Magical_Noob
 
-local Signal = require(script.Parent.Parent:WaitForChild("Signal"));
+local Gameplay = script.Parent.Parent;
+local Config = require(game.ReplicatedStorage:WaitForChild("GameConfig"));
+local Signal = require(Gameplay:WaitForChild("Signal"));
+
 local Note = {};
 Note.__index = Note;
 
@@ -52,16 +55,25 @@ function Note:OnAwake(MakeSleeve)
 end
 
 --- OnNoteReleased
--- @param distance: number
 -- @param origin: number
 -- @param size: number
+-- @param score: NoteConfig
 function Note:OnNoteReleased()
 	
 end
 
 --- OnNoteHeld
-function Note:OnNoteHeld()
-	self.Score:Fire(1);	
+-- @param origin: number
+-- @param size: number
+-- @param score: NoteConfig
+function Note:OnNoteHeld(origin, size, score)
+	if (not score) then
+		self.Score:Fire(0);
+		self:Destroy();
+		return;
+	end
+	
+	self.Score:Fire(score.pts_add);	
 	self:Destroy();
 end
 
@@ -88,7 +100,7 @@ end
 function Note:Update(dt)
 	self.position += (dt * self.speed);
 	self.Sleeve.Position = UDim2.new(self.posX, 0, self.position, 0);
-	if (self.position > 1.15) then
+	if (self.position > Config.NOTE_FAIL_RANGE) then
 		self.Score:Fire(0);
 		self:Destroy();
 		return;
