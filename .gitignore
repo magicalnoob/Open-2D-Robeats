@@ -1,0 +1,6 @@
+# Roblox place file
+/build.rbxlx
+
+# Roblox Studio lock files
+*.rbxl.lock
+*.rbxlx.lock
